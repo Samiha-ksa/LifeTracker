@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Day</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbe3dc;--bg2:#fdf0d8;--card:#fff8f3;--ink:#4a2a30;--soft:#8a6068;--line:#efcfc6;--plum:#a63a5f;--onplum:#fff;--plumbg:#fbe0e8;--saff:#f2b544;--saffink:#3a2600;--mini:#fde8c9;--sand:#fdeccb;--c-pray:#c58a2b;--c-home:#c9607e;--c-kids:#e08a4f;--c-body:#8e7cc3;
+ color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dusk"]{--bg:#e9bdbd;--bg2:#e3a98f;--card:#fbeee8;--ink:#45252f;--soft:#84565e;--line:#dbaeae;--plum:#9a2f58;--plumbg:#f6dbe0;--mini:#f6d9b8;--sand:#f6dcb8}
+:root[data-theme="night"]{--bg:#1c2447;--bg2:#121733;--card:#262f5e;--ink:#eef0fb;--soft:#aab3dc;--line:#3a4580;--plum:#f0a3c4;--onplum:#2a1220;--plumbg:#3a2d5c;--saff:#f5c15a;--mini:#34407a;--sand:#2f3a70;--c-pray:#f5c15a;--c-home:#f0a3c4;--c-kids:#f2a679;--c-body:#a99be0;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2)) fixed;color:var(--ink);font-family:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;min-height:100vh}
+main{max-width:30rem;margin:0 auto;padding:1.25rem 1rem 7rem}
+h1,h2,h3,.serif{font-family:Fraunces,Georgia,serif;font-weight:700;margin:0}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--saff);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
+.top h1{font-size:1.6rem}
+.cnt{font-size:.85rem;color:var(--soft)}
+.anch{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.9rem 0}
+.anch div{background:var(--card);border:1px solid var(--line);border-radius:.9rem;padding:.5rem .6rem;text-align:center}
+.anch b{display:block;font-family:Fraunces,serif;font-size:1.05rem}
+.anch span{font-size:.75rem;color:var(--soft)}
+.unstuck{width:100%;background:var(--saff);color:var(--saffink);border-radius:1.4rem;padding:1.3rem 1rem;font-family:Fraunces,serif;font-weight:700;font-size:1.5rem;box-shadow:0 5px 0 rgba(0,0,0,.18);margin-bottom:1.25rem}
+.unstuck small{display:block;font-family:Figtree,sans-serif;font-weight:600;font-size:.85rem;opacity:.8;margin-top:.15rem}
+.unstuck:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+nav{display:flex;gap:.4rem;margin-bottom:1rem}
+nav button{flex:1;padding:.6rem;border-radius:.8rem;background:transparent;border:1px solid var(--line);font-weight:600;color:var(--soft)}
+nav button[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.stack{position:relative;height:17.5rem;margin-bottom:1rem;touch-action:pan-y}
+.card{position:absolute;inset:0 0 auto 0;height:15rem;background:var(--card);border:1px solid var(--line);border-left-width:.55rem;border-radius:1.4rem;padding:1.2rem 1.2rem 1rem;display:flex;flex-direction:column;justify-content:space-between;transition:transform .25s ease,opacity .25s ease;user-select:none}
+.card.top3{touch-action:pan-y;cursor:grab;box-shadow:0 10px 26px rgba(20,50,45,.16)}
+.card p{font-family:Fraunces,Georgia,serif;font-size:1.4rem;line-height:1.3;margin:0;font-weight:500}
+.card .tag{font-size:.8rem;color:var(--soft);font-weight:600;margin-bottom:.4rem}
+.t-pray{border-left-color:var(--c-pray)}.t-home{border-left-color:var(--c-home)}.t-kids{border-left-color:var(--c-kids)}.t-new{border-left-color:var(--saff)}.t-you{border-left-color:var(--plum);background:linear-gradient(var(--plumbg),var(--plumbg)),var(--card)}.t-body{border-left-color:var(--c-body)}
+.acts{display:flex;gap:.6rem;align-items:center}
+.done{flex:1;background:var(--ink);color:var(--bg);border-radius:.9rem;padding:.8rem;font-weight:700;font-size:1.05rem}
+.skip{background:transparent;border:1px solid var(--line);border-radius:.9rem;padding:.8rem 1rem;color:var(--soft);font-weight:600}
+.mini{background:var(--mini);border-radius:.7rem;padding:.4rem .8rem;font-weight:600;font-size:.85rem;margin-top:.6rem}
+.hint{font-size:.8rem;color:var(--soft);text-align:center}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:1.4rem;padding:2rem 1.2rem;text-align:center}
+.empty p{font-family:Fraunces,serif;font-size:1.3rem;margin:.3rem 0 0}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:1.2rem;padding:1rem 1.1rem;margin-bottom:.8rem}
+.sec h2{font-size:1.2rem;margin-bottom:.5rem}
+.chk{display:flex;gap:.7rem;align-items:flex-start;padding:.7rem 0;border-top:1px solid var(--line);font-size:1.02rem}
+.chk:first-of-type{border-top:0}
+.chk input{width:1.5rem;height:1.5rem;accent-color:var(--plum);flex:none;margin-top:.1rem}
+.chk input:checked+span{text-decoration:line-through;color:var(--soft)}
+.meal{display:grid;grid-template-columns:5.2rem 1fr;gap:.2rem .6rem;font-size:.98rem}
+.meal b{color:var(--soft);font-weight:600}
+.day{border:1px solid var(--line);border-radius:1rem;padding:.7rem .9rem;margin-bottom:.5rem;background:var(--card)}
+.day.now{border-color:var(--plum);border-width:2px}
+small.n{color:var(--soft);font-size:.82rem}
+.fab{position:fixed;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));width:4rem;height:4rem;border-radius:50%;background:var(--plum);color:var(--onplum);box-shadow:0 6px 18px rgba(0,0,0,.28);display:grid;place-items:center;z-index:20}
+.fab svg{width:2rem;height:2rem}
+.ov{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;padding:calc(1rem + env(safe-area-inset-top,0px)) 1rem calc(2rem + env(safe-area-inset-bottom,0px))}
+.ov[hidden]{display:none}
+.ovin{max-width:30rem;margin:0 auto}
+.close{float:right;background:transparent;border:1px solid var(--line);border-radius:.8rem;padding:.45rem .9rem;font-weight:600}
+.big{font-family:Fraunces,serif;font-size:1.7rem;line-height:1.3;margin:2.2rem 0 1.4rem}
+.btn{display:block;width:100%;border-radius:1rem;padding:.95rem;font-weight:700;font-size:1.05rem;margin-top:.6rem}
+.b1{background:var(--saff);color:var(--saffink)}.b2{background:var(--card);border:1px solid var(--line)}.b3{background:var(--plum);color:var(--onplum)}
+.quote{background:var(--sand);border-radius:1.2rem;padding:1.1rem 1.2rem;margin:1.2rem 0 .8rem}
+.quote p{font-family:Fraunces,serif;font-size:1.35rem;line-height:1.35;margin:0 0 .4rem}
+textarea{width:100%;min-height:8rem;border:1px solid var(--line);border-radius:1rem;padding:.8rem;background:var(--card);color:var(--ink);font:inherit;resize:vertical}
+input[type=time]{border:1px solid var(--line);border-radius:.6rem;background:var(--card);color:var(--ink);font:inherit;padding:.3rem .4rem}
+details summary{cursor:pointer;font-weight:600;color:var(--soft)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin:.5rem 0}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+</head>
+<body>
+<main>
+ <div class="top"><h1 id="hi"></h1><span class="cnt" id="cnt"></span></div>
+ <div class="anch" id="anch"></div>
+ <button class="unstuck" onclick="openStuck()">Get me unstuck<small>Frozen? Tap here. One tiny move.</small></button>
+ <nav id="nav"></nav>
+
+ <div id="v-today">
+  <div class="stack" id="stack"></div>
+  <p class="hint" id="hint">Swipe right or tap Done. Swipe left or tap Skip to save it for later.</p>
+  <button class="skip" style="width:100%;margin-top:.8rem" onclick="openAdd()">+ Add a card</button>
+  <details style="margin-top:1.4rem"><summary>My three times</summary>
+   <div class="sec" style="margin-top:.6rem">
+    <div class="row"><label for="tw">Wake up</label><input id="tw" type="time" onchange="setT('wake',this.value)"></div>
+    <div class="row"><label for="tk">Kids’ bedtime</label><input id="tk" type="time" onchange="setT('kids',this.value)"></div>
+    <div class="row"><label for="tp">Phone down</label><input id="tp" type="time" onchange="setT('phone',this.value)"></div>
+    <button class="skip" onclick="resetDay()" style="margin-top:.4rem">Start today’s cards over</button>
+   </div></details>
+ </div>
+
+ <div id="v-clean" hidden></div>
+ <div id="v-meals" hidden></div>
+</main>
+
+<button class="fab" onclick="openDiary()" aria-label="Open the nightly diary">
+ <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 5h17a3 3 0 0 1 3 3v19H9a3 3 0 0 1-3-3z"/><path d="M6 24a3 3 0 0 1 3-3h17"/><path d="M10 14c2-3 4-4 6-4s4 1 6 4c-2 3-4 4-6 4s-4-1-6-4z"/><circle cx="16" cy="14" r="1.6" fill="currentColor"/></svg>
+</button>
+
+<div class="ov" id="stuck" hidden><div class="ovin" id="stuckIn"></div></div>
+<div class="ov" id="add" hidden><div class="ovin" id="addIn"></div></div>
+<div class="ov" id="diary" hidden><div class="ovin" id="diaryIn"></div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ymd=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const now=new Date(),today=ymd(now),dow=now.getDay();
+const DN=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+let S={t:{wake:"05:30",kids:"20:30",phone:"21:30"},days:{},cl:{},diary:{}};
+try{const x=JSON.parse(localStorage.getItem("calmDay")||"{}");Object.assign(S,x)}catch(e){}
+const save=()=>{try{localStorage.setItem("calmDay",JSON.stringify(S))}catch(e){}};
+const fm=v=>{const[a,b]=v.split(":").map(Number);return (a%12||12)+":"+String(b).padStart(2,"0")+" "+(a>=12?"PM":"AM")};
+
+/* ---------- the day's flow (times only for wake, kids bed, phone down) ---------- */
+function seq(){
+ const t=S.t,d=dow;
+ const hsMorning=d==1?["co","Pack snacks and lunch, head to Co-Op","home"]:d==5?["sq","Sisters Quran Connection: Surah Al-Kahf and reflections","pray"]:d==6?["lib","Library outing and book swap with the kids","kids"]:["hs","Homeschool block. Start with the easy subject.","kids"];
+ const A=[
+  ["wake",`Wake up at ${fm(t.wake)}. Alarm across the room, water, lights on.`,"body"],
+  ["fajr","Wudu and Fajr, then morning adhkar","pray"],
+  ["walk","Exercise: walk with Qur’an audio","body"],
+  ["kidsup","Wake the kids: curtains open, morning routine","kids"],
+  ["bfast",`Make breakfast: ${MEALS[d][0]}`,"home"],
+  ...(d==3?[["gard","Garden check and watering. Let the kids help.","kids"]]:[]),
+  hsMorning,
+  ["you1","Your thing. Pick a project, craft, video idea or hobby and touch it for a little while.","you"],
+  ["kit",`Kitchen reset, then lunch prep: ${MEALS[d][1]}`,"home"],
+  [d==5?"jum":"dhuhr",d==5?"Jumu’ah prayer, then lunch together":"Dhuhr and family lunch","pray"],
+  ["nap","Qailulah rest for you. Kids on quiet boxes.","body"],
+  ...(d==0||d==2||d==4?[["gym","Exercise: gym strength routine","body"]]:[["move","Exercise: a stretch or short living-room workout. The kids can join.","body"]]),
+  ...(d==2?[["live","Co-Op live class and platform admin","home"]]:[]),
+  ...(d==4?[["film","Film two or three short clips","you"]]:[]),
+  ["asr","Asr","pray"],
+  ...(d==3||d==5||d==6?[["play","Free play or balcony time with the kids","kids"]]:[]),
+  ["clean","Today’s clean zone: "+ZONES[d].n,"home","clean"],
+  ["dprep",`Start dinner: ${MEALS[d][2]}`,"home"],
+  ["book","Read a few pages of your book. Anywhere, any chair.","you"],
+  ["wild","Wildcard. Do one unplanned fun thing: snack run, call a friend, sit outside, change the plan.","you"],
+  ["mag","Maghrib and family dinner","pray"],
+  ["bath","Bath time: 3yo first, then 6yo","kids"],
+  ["kbed",`Kids’ bedtime: pyjamas, teeth, duas, story. Lights out at ${fm(t.kids)}.`,"kids"],
+  ["diary","Nightly diary and quote. Do it with your daughter.","you","diary"],
+  ["reset","Quick reset: dishes and counters only","home"],
+  [d==0?"plan":"hub",d==0?"Plan the week: prep the homeschool bins":"Downtime with your husband","you"],
+  ["you2","Free choice: journal, read, make something, or do nothing. All count.","you"],
+  ["set","Set up tomorrow: clothes out, water by the bed","home"],
+  ["phone",`Phone down at ${fm(t.phone)}. Dock it across the room.`,"body"],
+  ["isha","Isha, Surah Al-Mulk, tasbeeh and duas","pray"],
+  ["lights","Lights out. Good night.","body"]
+ ];
+ return A.map(([id,txt,tag,act])=>({id,txt,tag,act}));
+}
+const TAGS={pray:"Prayer",home:"Home",kids:"Kids",you:"For you",body:"Body",new:"Added by you"};
+
+/* ---------- state for today ---------- */
+function D(){
+ let x=S.days[today];
+ if(!x){x=S.days[today]={o:seq().map(c=>c.id),d:[],x:[]};Object.keys(S.days).filter(k=>k<today).forEach(k=>delete S.days[k])}
+ x.x=x.x||[];
+ const sq=seq().map(c=>c.id),ids=[...sq,...x.x.map(c=>c.id)];
+ x.o=x.o.filter(i=>ids.includes(i));
+ sq.forEach((id,n)=>{if(!x.o.includes(id)&&!x.d.includes(id)){let p=-1;for(let j=n-1;j>=0;j--){const k=x.o.indexOf(sq[j]);if(k>=0){p=k;break}}x.o.splice(p+1,0,id)}});
+ return x;
+}
+const byId=()=>Object.fromEntries([...seq(),...D().x.map(c=>({id:c.id,txt:c.txt,tag:"new"}))].map(c=>[c.id,c]));
+function act(kind){
+ const x=D(),id=x.o.shift();if(!id)return;
+ if(kind=="done")x.d.push(id);
+ else x.o.splice(Math.min(5,x.o.length),0,id); // skipped: comes back later
+ save();renderToday();
+}
+function fly(kind){
+ const c=document.querySelector(".card.top3");
+ if(!c){act(kind);return}
+ c.style.transform=`translateX(${kind=="done"?"":"-"}120%) rotate(${kind=="done"?8:-8}deg)`;c.style.opacity=0;
+ setTimeout(()=>act(kind),220);
+}
+
+function renderToday(){
+ const x=D(),m=byId(),h=now.getHours();
+ $("hi").textContent=(h<12?"Good morning":h<17?"Good afternoon":"Good evening")+", mama";
+ $("cnt").textContent=x.d.length?x.d.length+" done today":DN[dow];
+ $("anch").innerHTML=[["Wake",S.t.wake],["Kids’ bedtime",S.t.kids],["Phone down",S.t.phone]].map(([a,b])=>`<div><b>${fm(b)}</b><span>${a}</span></div>`).join("");
+ $("tw").value=S.t.wake;$("tk").value=S.t.kids;$("tp").value=S.t.phone;
+ const three=x.o.slice(0,3).map(i=>m[i]);
+ if(!three.length){$("stack").style.height="auto";$("stack").innerHTML=`<div class="empty"><h2>That’s the whole day.</h2><p>Rest, or go do your own thing.</p></div>`;$("hint").style.display="none";return}
+ $("hint").style.display="";$("stack").style.height="17.5rem";
+ $("stack").innerHTML=three.map((c,i)=>({c,i})).reverse().map(({c,i})=>{
+  const top=i==0;
+  const btn=top&&c.act=="clean"?`<button class="mini" onclick="go('clean')">Open the clean list</button>`:top&&c.act=="diary"?`<button class="mini" onclick="openDiary()">Open the diary</button>`:"";
+  return `<div class="card t-${c.tag} ${top?"top3":""}" ${top?'id="topc"':'aria-hidden="true"'} style="transform:translateY(${i*.9}rem) scale(${1-i*.04});z-index:${9-i};${top?"":"pointer-events:none;"}">
+   <div><div class="tag">${TAGS[c.tag]}</div><p>${esc(c.txt)}</p>${btn}</div>
+   ${top?`<div class="acts"><button class="skip" onclick="fly('skip')">Skip</button><button class="done" onclick="fly('done')">Done</button></div>`:""}</div>`}).join("");
+ const tc=$("topc");if(tc)bindSwipe(tc);
+}
+function bindSwipe(el){
+ let sx=null,dx=0;
+ el.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;sx=e.clientX;dx=0;el.setPointerCapture(e.pointerId);el.style.transition="none"});
+ el.addEventListener("pointermove",e=>{if(sx==null)return;dx=e.clientX-sx;el.style.transform=`translateX(${dx}px) rotate(${dx/25}deg)`});
+ const end=()=>{if(sx==null)return;sx=null;el.style.transition="";if(dx>90)fly("done");else if(dx<-90)fly("skip");else el.style.transform=""};
+ el.addEventListener("pointerup",end);el.addEventListener("pointercancel",end);
+}
+function setT(k,v){if(v){S.t[k]=v;save();renderToday()}}
+function resetDay(){delete S.days[today];save();renderToday()}
+
+/* ---------- add a card ---------- */
+function openAdd(){
+ $("addIn").innerHTML=`<button class="close" onclick="$('add').hidden=true">Cancel</button>
+  <h2 style="margin-top:.3rem">Something came up?</h2><small class="n">Put it on the list so it’s planned, not floating in your head.</small>
+  <label for="ad" style="font-weight:600;display:block;margin:1.2rem 0 .4rem">What is it?</label>
+  <textarea id="ad" style="min-height:5rem" placeholder="e.g. Call the pediatrician"></textarea>
+  <button class="btn b1" onclick="addCard('now')">Make it my next card</button>
+  <button class="btn b2" onclick="addCard('later')">Put it on the list for later</button>`;
+ $("add").hidden=false;setTimeout(()=>$("ad").focus(),50);
+}
+function addCard(w){
+ const v=$("ad").value.trim();if(!v)return;
+ const x=D(),id="x"+Date.now();x.x.push({id,txt:v});
+ x.o.splice(w=="now"?0:Math.min(3,x.o.length),0,id);
+ save();$("add").hidden=true;go("today");renderToday();
+}
+
+/* ---------- colours follow the time of day ---------- */
+function applyTheme(){const d=new Date(),h=d.getHours()+d.getMinutes()/60;document.documentElement.dataset.theme=(h>=19.5||h<5)?"night":h>=17?"dusk":"day"}
+
+/* ---------- clean ---------- */
+var ZONES=[
+ {n:"Kitchen reset",t:["Clear the counters and wipe them","Stovetop and microwave wipe","Scrub the sink, shine the tap","Fridge: toss anything expired, wipe one shelf","Sweep and mop"]},
+ {n:"Living room",t:["Toys back in bins","Dust surfaces and the TV stand","Fold blankets, fluff cushions","Vacuum the rug and floor","Wipe tables and glass"]},
+ {n:"Bathrooms",t:["Toilets: scrub and wipe","Sinks and mirrors","Shower or tub scrub","Empty bins, fresh towels","Mop the floor"]},
+ {n:"Kids’ rooms",t:["Toys back where they live","Make the beds","Dirty laundry into the hamper","Vacuum the floors","Wipe surfaces and shelves"]},
+ {n:"Bedroom and laundry",t:["Strip the bed, start a wash","Clear nightstands and surfaces","Fold and put away laundry","Dust and wipe mirrors","Vacuum"]},
+ {n:"Entry and floors",t:["Sort shoes and bags","Wipe door handles and light switches","Vacuum the whole floor","Mop the high-traffic spots","Take the trash out"]},
+ {n:"Weekly reset",t:["Empty every trash bin","Tidy the balcony, water the plants","Dish catch-up and put away","Reset the launch pad: keys, bags, papers","Clear visible clutter in one room"]}
+];
+const MIN=["Sink empty of dishes","Counters clear","A clear path on the floor","Trash out"];
+function renderClean(){
+ const z=ZONES[dow],c=S.cl[today]||[];
+ const box=(k,t)=>`<label class="chk"><input type="checkbox" ${c.includes(k)?"checked":""} onchange="tickC('${k}')"><span>${t}</span></label>`;
+ const left=z.t.filter((_,i)=>!c.includes("z"+i)).length;
+ $("v-clean").innerHTML=`<div class="sec"><h2>${z.n}</h2><small class="n">${left?left+" left. Top to bottom, in order.":"All clear. Go enjoy it."}</small>${z.t.map((t,i)=>box("z"+i,esc(t))).join("")}</div>
+  <div class="sec"><h2>Bare minimum</h2><small class="n">For the days when everything is too much.</small>${MIN.map((t,i)=>box("m"+i,t)).join("")}</div>`;
+}
+function tickC(k){const c=S.cl[today]=S.cl[today]||[];const i=c.indexOf(k);i<0?c.push(k):c.splice(i,1);Object.keys(S.cl).filter(d=>d<today).forEach(d=>delete S.cl[d]);save();renderClean()}
+
+/* ---------- meals: simple weekly rotation, all easy to find in Saudi ---------- */
+const MEALS=[
+ ["Eggs, khubz, labneh and cucumber","Chicken and rice, one pot (cook double)","Leftover chicken and rice with a tomato-cucumber salad"],
+ ["Oats with banana and dates","Co-Op pack: chicken and cheese wraps, an apple","Pasta with garlic, onion and tomato paste sauce"],
+ ["Yogurt, dates and nuts","Rice bowl: leftover chicken, cucumber, tomato","Sheet pan: chicken, potatoes and carrots"],
+ ["Foul with oil, lemon and khubz","Tuna sandwiches or tuna salad","Lentil soup with khubz (make double)"],
+ ["Eggs and toast with cream cheese","Leftover lentil soup and rice","Chicken fajita pan with tortillas and peppers"],
+ ["French toast or pancakes with banana and honey","Hummus, veggies and bread","Jumu’ah meal: roast chicken and rice, or order in"],
+ ["Yogurt with oats and banana","Chicken and cheese quesadillas","Shakshuka: eggs, tomatoes, peppers and khubz"]
+];
+function renderMeals(){
+ const row=i=>`<div class="day ${i==dow?"now":""}"><b>${DN[i]}</b><div class="meal" style="margin-top:.3rem"><b>Breakfast</b><span>${MEALS[i][0]}</span><b>Lunch</b><span>${MEALS[i][1]}</span><b>Dinner</b><span>${MEALS[i][2]}</span></div></div>`;
+ $("v-meals").innerHTML=`<div class="sec"><h2>Today</h2><div class="meal" style="font-size:1.1rem"><b>Breakfast</b><span>${MEALS[dow][0]}</span><b>Lunch</b><span>${MEALS[dow][1]}</span><b>Dinner</b><span>${MEALS[dow][2]}</span></div><p class="n" style="margin:.7rem 0 0"><small class="n">Snacks: dates, nuts, an apple, cucumber with labneh. Too tired to cook? Eggs, bread and fruit is dinner.</small></p></div>
+  <h2 style="font-size:1.1rem;margin:1.2rem 0 .5rem">The week, repeating</h2>${[0,1,2,3,4,5,6].map(row).join("")}
+  <div class="sec"><h2>Weekly shopping staples</h2><small class="n">Chicken, eggs, rice, pasta, lentils, canned foul and tuna, tomatoes, onions, garlic, potatoes, carrots, peppers, cucumbers, bananas, apples, dates, labneh, yogurt, cream cheese, cheese, khubz, tortillas, oats, tomato paste, tahini, hummus.</small></div>`;
+}
+
+/* ---------- navigation ---------- */
+let view="today";
+const VIEWS=[["today","Today"],["clean","Clean"],["meals","Food"]];
+function go(v){view=v;renderNav();window.scrollTo(0,0)}
+function renderNav(){
+ $("nav").innerHTML=VIEWS.map(([k,t])=>`<button aria-current="${k==view}" onclick="go('${k}')">${t}</button>`).join("");
+ VIEWS.forEach(([k])=>$("v-"+k).hidden=k!=view);
+ if(view=="clean")renderClean();if(view=="meals")renderMeals();
+}
+
+/* ---------- get me unstuck ---------- */
+const IDEAS=[
+ "Stand up right now and drink a full glass of water. That is the whole task.",
+ "Make wudu. Cool water on your face and hands resets your body and your head.",
+ "Say bismillah and work on the smallest piece for one minute. You’re allowed to stop after.",
+ "Say your next physical action out loud: “I pick up the…” Then do only that.",
+ "Put on one song and move around the room until it ends.",
+ "Set a 5-minute timer. When it rings you may stop. Most of the time you won’t.",
+ "Do it badly on purpose. Messy and finished beats perfect and waiting.",
+ "Put your hand on the nearest mess and tidy that one surface. Nothing else.",
+ "Step outside for two minutes. Sun on your face, three slow breaths.",
+ "Message someone: “I’m doing X, stay with me.” Having a person nearby gets you moving.",
+ "Eat something with protein. A foggy brain is often a hungry one.",
+ "Write the thing you’re avoiding in one sentence, then write its first tiny step.",
+ "Give the kids a job right next to you. They help, and you start moving.",
+ "If you haven’t prayed yet, pray now. Come back lighter."
+];
+let ix=-1;
+function openStuck(){ix=-1;nextIdea(true);$("stuck").hidden=false}
+function nextIdea(first){
+ let n;do{n=Math.floor(Math.random()*IDEAS.length)}while(n==ix);ix=n;
+ $("stuckIn").innerHTML=`<button class="close" onclick="$('stuck').hidden=true">Close</button>
+  <p class="cnt" style="margin-top:.4rem">${first?"Stuck is not lazy. Starting is just hard. Try this:":"Try this one instead:"}</p>
+  <div class="big">${IDEAS[ix]}</div>
+  <button class="btn b1" onclick="$('stuck').hidden=true">I’ll try it</button>
+  <button class="btn b2" onclick="nextIdea(false)">Give me a different idea</button>
+  <button class="btn b2" onclick="$('stuck').hidden=true;go('today')">Just show me my next card</button>`;
+}
+
+/* ---------- nightly diary ---------- */
+const Q=[
+ ["Indeed, with hardship comes ease.","Qur’an 94:6","What felt hard today, and what made it easier?"],
+ ["Allah does not burden a soul beyond what it can bear.","Qur’an 2:286","When did you do something you thought you couldn’t?"],
+ ["The best of you are the best to their families.","Hadith, Tirmidhi","How were we kind to each other today?"],
+ ["A kind word is charity.","Hadith, Bukhari and Muslim","Whose day could a kind word brighten tomorrow?"],
+ ["If you are grateful, I will give you more.","Qur’an 14:7","Name three things you are thankful for tonight."],
+ ["In the remembrance of Allah hearts find rest.","Qur’an 13:28","What makes your heart feel calm?"],
+ ["The most beloved deeds to Allah are the consistent ones, even if small.","Hadith, Bukhari and Muslim","What small good thing could we do every day?"],
+ ["Smiling at your brother or sister is charity.","Hadith, Tirmidhi","Who did you smile at today?"],
+ ["Allah is gentle and loves gentleness in everything.","Hadith, Muslim","When was it hard to be gentle, and what helped?"],
+ ["Allah is with the patient.","Qur’an 2:153","When did you wait patiently today?"],
+ ["Make things easy and do not make them hard.","Hadith, Bukhari","What is one thing we can make easier tomorrow?"],
+ ["Remember Me, and I will remember you.","Qur’an 2:152","How did we remember Allah today?"],
+ ["Whoever does not thank people has not thanked Allah.","Hadith, Abu Dawud and Tirmidhi","Who can we say thank you to tomorrow?"],
+ ["Your Lord has not abandoned you.","Qur’an 93:3","How does it feel to know you are never alone?"]
+];
+function openDiary(){
+ const n=Math.round((new Date(today)-new Date(now.getFullYear()+"-01-01"))/864e5),q=Q[n%Q.length],e=S.diary[today]||"";
+ const past=Object.keys(S.diary).filter(k=>k<today&&S.diary[k]).sort().reverse().slice(0,7);
+ $("diaryIn").innerHTML=`<button class="close" onclick="closeDiary()">Close</button>
+  <h2 style="margin-top:.3rem">Tonight’s diary</h2><small class="n">${DN[dow]}</small>
+  <div class="quote"><p>“${q[0]}”</p><small class="n">${q[1]} (wording paraphrased)</small></div>
+  <div class="sec"><b>Talk about it together</b><br>${q[2]}</div>
+  <label for="de" style="font-weight:600;display:block;margin:1rem 0 .4rem">Write a few lines. Something you’re grateful for, something that went well, a dua for tomorrow.</label>
+  <textarea id="de" placeholder="Alhamdulillah for…">${esc(e)}</textarea>
+  <button class="btn b3" onclick="saveDiary()">Save tonight’s entry</button><p class="hint" id="saved"></p>
+  ${past.length?`<details style="margin-top:1rem"><summary>Earlier entries</summary>${past.map(k=>`<div class="day"><small class="n">${k}</small><div style="white-space:pre-wrap">${esc(S.diary[k])}</div></div>`).join("")}</details>`:""}`;
+ $("diary").hidden=false;
+}
+function saveDiary(){S.diary[today]=$("de").value.trim();save();$("saved").textContent="Saved. Sleep well.";if(D().o[0]=="diary")act("done")}
+function closeDiary(){$("diary").hidden=true}
+
+applyTheme();setInterval(applyTheme,60000);
+renderNav();renderToday();
+setInterval(()=>{if(ymd(new Date())!==today)location.reload()},60000);
+</script>
+</body>
+</html>
